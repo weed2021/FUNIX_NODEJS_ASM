@@ -2,29 +2,72 @@ const Staff = require('../models/staff');
 const moment = require('moment');
 const Attendance = require('../models/attendance');
 const Leave = require('../models/annualLeave');
+const Covid =  require('../models/covid');
+
+exports.postCovidCheck = (req, res, next) => {
+    const celsius = req.body.celsius;
+    const dateRegister = new Date();
+    console.log(req.body.type1)
+    const type1 = req.body.type1;
+    const dateInjection1 = new Date(req.body.dateInjection1);
+    const type2 = req.body.type2;
+    const dateInjection2 = new Date(req.body.dateInjection2);
+
+    const infection = req.body.infection;
+
+    const covid = new Covid({
+        staffId: req.staff._id,
+        bodyTemporature: {
+            celsius: celsius,
+            dateRegister: dateRegister
+        }, 
+        vaccine: {
+            first:{
+                type: type1,
+                dateInjection1: dateInjection1
+            },
+            second:{
+                type: type2,
+                dateInjection1: dateInjection2
+            }
+        },
+        infection: parseInt(infection)
+    })
+    covid.save();
+
+
+}
+
+exports.getCovidCheck = (req, res, next) => {
+    res.render('staff/covid', {
+        pageTitle: 'Covid check',
+        path: '/covid'
+    })
+}
+
 
 exports.postSalary = (req, res, next) => {
 
     const salaryScale = req.staff.salaryScale;
 
-    Attendance.find({month: parseInt(req.body.month)})
-        .then(attendances =>{
+    Attendance.find({ month: parseInt(req.body.month) })
+        .then(attendances => {
             let sumTimeMonth = 0;
             let overtime = 0;
             let lackOfHours = 0;
-            for (let attendance of attendances){
+            for (let attendance of attendances) {
                 sumTimeMonth += attendance.totalTimeOfDay;
             }
-            if(sumTimeMonth < 16){
-                lackOfHours = 16-sumTimeMonth;
-            }else if(sumTimeMonth > 16){
+            if (sumTimeMonth < 16) {
+                lackOfHours = 16 - sumTimeMonth;
+            } else if (sumTimeMonth > 16) {
                 overtime = sumTimeMonth - 16;
-            }else{
+            } else {
                 sumTimeMonth = 0;
                 overtime = 0;
             }
             //Check thang ko lam viec ngay nao
-            if(sumTimeMonth ===0){
+            if (sumTimeMonth === 0) {
                 return res.render('staff/salary', {
                     month: req.body.month,
                     salary: 0,
@@ -32,17 +75,15 @@ exports.postSalary = (req, res, next) => {
                     path: '/postSalary'
                 })
             }
-
-            const salary = 3000000*salaryScale+(overtime-lackOfHours)*200000;
-            console.log(salary);
+            const salary = 3000000 * salaryScale + (overtime - lackOfHours) * 200000;
             res.render('staff/salary', {
                 month: req.body.month,
-                salary: salary ,
+                salary: salary,
                 pageTitle: 'Salary',
                 path: '/postSalary'
             })
         })
-    
+
 }
 
 exports.getWorkInfo = (req, res, next) => {
@@ -131,12 +172,12 @@ exports.postCheckOutAttendance = (req, res, next) => {
                         const diff = Math.abs(new Date(checkOut) - new Date(attendance.checkIn));
                         const diffMins = minutes = Math.floor((diff / 1000) / 60);
 
-                        attendance.timeOfSession = diffMins/60
-                        TotalTimeOfDay += diffMins/60;
+                        attendance.timeOfSession = diffMins / 60
+                        TotalTimeOfDay += diffMins / 60;
                         attendance.statusWork = false;
                         attendance.checkOut = checkOut;
                         if (diffMins > 480) {
-                            attendance.overtime = (diffMins - 480)/60;
+                            attendance.overtime = (diffMins - 480) / 60;
                         }
                     }
 

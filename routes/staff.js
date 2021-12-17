@@ -7,6 +7,10 @@ const errController = require('../controllers/error');
 
 router.get('/',staffController.getHomePage);
 
+router.post('/postCovidCheck', staffController.postCovidCheck);
+
+router.get('/covid',staffController.getCovidCheck);
+
 router.post('/postSalary',staffController.postSalary);
 
 router.get('/err',errController.getCheckIn);
