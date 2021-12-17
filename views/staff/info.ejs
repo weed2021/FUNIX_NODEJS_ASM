@@ -1,0 +1,57 @@
+<%- include('../includes/head.ejs') %>
+    </head>
+
+    <body>
+        <%- include('../includes/navigation.ejs') %>
+
+            <div class="container rounded bg-white mt-5 mb-5">
+                <div class="row">
+                    <div class="col-md-4 border-right">
+                        <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+                            <img class="mt-5" width="300px" src="<%= image %>">
+                            <span class="font-weight-bold">Le Ba Quan</span><span
+                                class="text-black-50">quanlbfx12493@funix.edu.vn</span>
+                            <span> </span>
+                        </div>
+                    </div>
+                    <div class="col-md-8 border-right">
+                        <div class="p-3 py-5">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h4 class="text-right">Profile Settings</h4>
+                            </div>
+
+                            <div class="row mt-3">
+                                <div class="col-md-12"><label class="labels">Fullname</label><input type="text"
+                                        class="form-control" disabled value="<%= name %>"></div>
+                                <div class="col-md-12 mt-2"><label class="labels">Day Of Birth</label><input type="text"
+                                        class="form-control" disabled value="<%= doB %>"></div>
+                                <div class="col-md-12 mt-2"><label class="labels">Salary Scale</label><input type="text"
+                                        class="form-control" disabled value="<%= salaryScale %>"></div>
+                                <div class="col-md-12 mt-2"><label class="labels">Start Date</label><input type="text"
+                                        class="form-control" disabled value="<%= startDate %>"></div>
+                                <div class="col-md-12 mt-2"><label class="labels">Department</label><input type="text"
+                                        class="form-control" disabled value="<%= department %>"></div>
+                                <div class="col-md-12 mt-2"><label class="labels">Annual Leave</label><input type="text"
+                                        class="form-control" disabled value="<%= annualLeave %>"></div>
+
+                            </div>
+
+                            <div class="mt-5 text-center">
+                                <form action="/info" method="POST">
+                                    <div class="col-md-12 mt-2">
+                                        <label class="labels">Image Url</label>
+                                        <input name = 'image' type="text" class="form-control" value="<%= image %>">
+                                    </div>
+                                    <input type="hidden" value="<%= id %>" name="staffId">
+                                    <button class="btn btn-primary mt-2" type="submit">Change Image</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+            </div>
+
+            <%- include('../includes/end.ejs') %>
+    </body>

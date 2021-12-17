@@ -1,0 +1,51 @@
+<%- include('../includes/head.ejs') %>
+    </head>
+
+    <body>
+        <%- include('../includes/navigation.ejs') %>
+            <% for (let day of attendances) { %>
+                <h1>Day: <%= day.day%>
+                </h1>
+                <ul>
+                    <% for (let i=0; day.items.length> i; i++ ) { %>
+
+                        <% if (i !== day.items.length - 1) {%>
+                            <h3>#<%= day.items[i]._id %></h3>
+                            <ul>
+                                <li>Check In: <%= new Date(day.items[i].checkIn).getHours()%>h<%= new Date(day.items[i].checkIn).getMinutes()%>'</li>
+                                <li>Check Out: <% if (day.items[i].checkOut) {%> <%=new Date(day.items[i].checkOut).getHours()%>h<%= new Date(day.items[i].checkOut).getMinutes()%>'<%}%></li>
+                                <li>Wowk Place: <%= day.items[i].workplace%></li>
+                                <li>Time Of Session: <%= (day.items[i].timeOfSession/60).toFixed(2)%> Hours</li>
+                            </ul>
+                        <%} else {%>
+                            <h3>#<%= day.items[i]._id %></h3>
+                            <ul>
+                                <li>Check In: <%= new Date(day.items[i].checkIn).getHours()%>h<%= new Date(day.items[i].checkIn).getMinutes()%>'</li>
+                                <li>Check Out: <% if (day.items[i].checkOut) {%> <%=new Date(day.items[i].checkOut).getHours()%>h<%= new Date(day.items[i].checkOut).getMinutes()%>'<%}%></li>
+                                <li>Wowk Place: <%= day.items[i].workplace%></li>
+
+                                <li>Time Of Session: <%= (day.items[i].timeOfSession/60).toFixed(2)%> Hours</li>
+                                
+                                <li>Annual Leave: <%= day.annualLeave %> Hours</li>
+                                
+                                <li>Time Of Day: <%= (day.totalTimeOfDay/60 + day.annualLeave).toFixed(2)  %> Hours</li>
+                            </ul>
+                            
+                        <%} %>
+                    <% } %>
+
+
+                </ul>
+                <hr>
+
+                <% } %>
+
+
+                    <!-- <div class="container">
+                <div class="row">
+                    <button class="btn btn-primary lg">Salary Month</button>
+                </div>
+            </div> -->
+
+                    <%- include('../includes/end.ejs') %>
+    </body>

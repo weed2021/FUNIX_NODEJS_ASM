@@ -1,0 +1,40 @@
+<%- include('../includes/head.ejs') %>
+    </head>
+
+    <body>
+        <%- include('../includes/navigation.ejs') %>
+            <div class="container">
+                <div class="row">
+                    <div class="col-6">
+                        <label>Name</label>
+                    </div>
+                    <div class="col-6">
+                        <label>
+                            <%= staff.name%>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="container">
+                    <div class="row">
+                        <form action="/attendanceCheckIn" method="POST" class="row g-3">
+                            <div class="col-12">
+                                <label for="inputState" class="form-label">Work Place</label>
+                                <select name="workplace" id="inputState" class="form-select">
+                                    <option value="home" selected>Home</option>
+                                    <option value="company">Company</option>
+                                    <option value="customer">Customer</option>
+                                </select>
+                            </div>
+
+                            <div class="col-12">
+                                <input type="hidden" name="checkIn" value="<%= new Date() %>" >
+                                <button type="submit" class="btn btn-primary">Check In</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <%- include('../includes/end.ejs') %>
+    </body>

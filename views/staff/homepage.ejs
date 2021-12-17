@@ -1,0 +1,28 @@
+<%- include('../includes/head.ejs') %>
+    </head>
+
+    <body>
+        <%- include('../includes/navigation.ejs') %>
+            
+            <div class="container">
+                <div class="row">
+                    <div class="col-6">
+                        <a class="btn btn-primary" href="/attendanceCheckIn">Check In</a>
+                    </div>
+                    <div class="col-6">
+                        <form action="/attendanceCheckOut" method="POST">
+                            <input type="hidden" name="checkOut" value="<%= new Date() %>">
+                            <button type="submit" class="btn btn-primary">Check Out</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="row mt-5">
+                    <div class="col-6">
+                        <a class="btn btn-primary" href="/annualLeave">Leave</a>
+                    </div>
+                    
+                </div>
+            </div>
+
+            <%- include('../includes/end.ejs') %>
+    </body>

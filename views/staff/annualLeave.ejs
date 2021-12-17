@@ -1,0 +1,48 @@
+<%- include('../includes/head.ejs') %>
+    </head>
+
+    <body>
+        <%- include('../includes/navigation.ejs') %>
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                        <form action="/annualLeave" method="POST">
+                            <div class="mb-3">
+                                <label for="leaveDate" class="form-label">Pick date you want to leave</label>
+                                <input required name="leaveDate" id="leaveDate" class="form-control" type="date">
+                            </div>
+                            <div class="mb-3">
+                                <label for="reason" class="form-label">Reason</label>
+                                <textarea required name="reason" id="reason" class="form-control" type="text"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="remainLeave" class="form-label">Remain leave</label>
+                                <input name="remainLeave" id="remainLeave" disabled value="<%= remainLeave %> Days / <%= remainLeave*8 %> Hours "
+                                    class="form-control" type="text">
+                            </div>
+                            <div class="mb-3">
+                                <label for="hoursLeave" class="form-label">Hours you wanna leave</label>
+                                <select name="hoursLeave" id="hoursLeave" class="form-select">
+                                    <option selected value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
+            </div>
+
+            <%- include('../includes/end.ejs') %>
+    </body>
