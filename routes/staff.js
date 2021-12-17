@@ -7,6 +7,8 @@ const errController = require('../controllers/error');
 
 router.get('/',staffController.getHomePage);
 
+router.post('/postSalary',staffController.postSalary);
+
 router.get('/err',errController.getCheckIn);
 
 router.get('/workInfo', staffController.getWorkInfo)

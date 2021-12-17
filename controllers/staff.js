@@ -3,7 +3,47 @@ const moment = require('moment');
 const Attendance = require('../models/attendance');
 const Leave = require('../models/annualLeave');
 
+exports.postSalary = (req, res, next) => {
 
+    const salaryScale = req.staff.salaryScale;
+
+    Attendance.find({month: parseInt(req.body.month)})
+        .then(attendances =>{
+            let sumTimeMonth = 0;
+            let overtime = 0;
+            let lackOfHours = 0;
+            for (let attendance of attendances){
+                sumTimeMonth += attendance.totalTimeOfDay;
+            }
+            if(sumTimeMonth < 16){
+                lackOfHours = 16-sumTimeMonth;
+            }else if(sumTimeMonth > 16){
+                overtime = sumTimeMonth - 16;
+            }else{
+                sumTimeMonth = 0;
+                overtime = 0;
+            }
+            //Check thang ko lam viec ngay nao
+            if(sumTimeMonth ===0){
+                return res.render('staff/salary', {
+                    month: req.body.month,
+                    salary: 0,
+                    pageTitle: 'Salary',
+                    path: '/postSalary'
+                })
+            }
+
+            const salary = 3000000*salaryScale+(overtime-lackOfHours)*200000;
+            console.log(salary);
+            res.render('staff/salary', {
+                month: req.body.month,
+                salary: salary ,
+                pageTitle: 'Salary',
+                path: '/postSalary'
+            })
+        })
+    
+}
 
 exports.getWorkInfo = (req, res, next) => {
 
@@ -68,7 +108,7 @@ exports.postCheckOutAttendance = (req, res, next) => {
     Attendance.findOne({ statusWork: true })
         .then(attendance => {
 
-            let totalTimeOfDay = attendance.totalTimeOfDay;
+            let TotalTimeOfDay = attendance.totalTimeOfDay;
 
             attendance.statusWork = false;
             const items = attendance.items;
@@ -91,18 +131,18 @@ exports.postCheckOutAttendance = (req, res, next) => {
                         const diff = Math.abs(new Date(checkOut) - new Date(attendance.checkIn));
                         const diffMins = minutes = Math.floor((diff / 1000) / 60);
 
-                        attendance.timeOfSession = diffMins
-                        totalTimeOfDay += diffMins;
+                        attendance.timeOfSession = diffMins/60
+                        TotalTimeOfDay += diffMins/60;
                         attendance.statusWork = false;
                         attendance.checkOut = checkOut;
                         if (diffMins > 480) {
-                            attendance.overtime = diffMins - 480;
+                            attendance.overtime = (diffMins - 480)/60;
                         }
                     }
 
                 }
             }
-            attendance.totalTimeOfDay = totalTimeOfDay;
+            attendance.totalTimeOfDay = TotalTimeOfDay;
             attendance.save()
             return res.redirect('/');
 
@@ -199,6 +239,7 @@ exports.postCheckInAttendance = (req, res, next) => {
                                             }],
                                             annualLeave: inLeave.hours,
                                             staffId: req.staff._id,
+                                            totalTimeOfDay: inLeave.hours,
                                             statusWork: statusWork,
                                             //...
                                         })

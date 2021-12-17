@@ -1,0 +1,31 @@
+<%- include('../includes/head.ejs') %>
+    </head>
+
+    <body>
+        <%- include('../includes/navigation.ejs') %>
+            
+            <h1>Salary Of <%=month%> is <%=salary%></h1>
+
+            <div class="container">
+                <form action="/postSalary" method="POST">
+                    <select name = "month" class="form-select">
+                        <option selected value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                    </select>
+                    <!-- <input type="hidden" value="11" name='month'> -->
+                    <button type="submit" class="btn btn-primary">Salary</button>
+                </form>
+            </div>
+
+            <%- include('../includes/end.ejs') %>
+    </body>
