@@ -19,7 +19,7 @@ exports.postSearch = (req, res, next) => {
             const request = req.body.workplace.toLowerCase();
             for (let att of attendances) {
                 for (let item of att.items) {
-                    if (item.workplace === request) {
+                    if (item.workplace.includes(request,0)) {
                         results.push(item)
                     }
                 }
