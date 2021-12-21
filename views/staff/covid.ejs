@@ -3,50 +3,85 @@
 
     <body>
         <%- include('../includes/navigation.ejs') %>
-            <form action="/postCovidCheck" method="POST">
-                <div class="container">
-                    <div class="row">
-                        <h2>Dang ky than nhiet</h2>
-                        <hr>
-                        <input type="number" class="form-control" name="celsius">
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <h2>Dang ky thong tin Vaccin</h2>
-                        <div class="col-6">
-                            <h4>Mui 1</h4>
-                            <hr>
-                            <label>Loai</label>
-                            <input type="text" class="form-control" name="type1">
-                            <hr>
-                            <label>Ngay tiem</label>
-                            <input type="date" class="form-control" name="dateInjection1">
-                        </div>
-                        <div class="col-6">
-                            <h4>Mui 2</h4>
-                            <hr>
-                            <label>Loai</label>
-                            <input type="text" class="form-control" name="type2">
-                            <hr>
-                            <label>Ngay tiem</label>
-                            <input type="date" class="form-control" name="dateInjection2">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <h2>Đăng ký thông tin dương tính với covid</h4>
-                            <div class="form-check">
-                                <input name="infection" class="form-check-input" type="checkbox" value="1"
-                                    id="flexCheckDefault">
-                                <label class="form-check-label" for="flexCheckDefault">
-                                    Co duong tinh hok?
-                                </label>
-                            </div>
-                    </div>
-                    <div class="row">
-                        <button type="submit" class="btn btn-primary">Update Thong tin</button>
-                    </div>
-                </div>
-            </form>
+            <div class="container mt-5">
+                <div class="alert alert-primary" role="alert">
+                    <h2>Body Temporature</h2>
+                  </div>
+                <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Celsius</th>
+                        <td scope="col"><%=celsius%></td>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row">Registration Date</th>
+                        <td><%=dateRegister%></td>
+                      </tr>
+                    </tbody>
+                </table>
+            </div>
+            <hr>
+            <div class="container mt-5">
+                <div class="alert alert-primary" role="alert">
+                    <h2>Vaccine</h2>
+                  </div>
+                <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col"><h3>First Vaccine</h3></th>
+                        <td></td>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="col">Type</th>
+                        <td><%=type1%></td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Date</th>
+                        <td><%=dateInjection1%></td>
+                      </tr>
+                    </tbody>
 
+                    <thead>
+                        <tr>
+                          <th scope="col"><h3>Second Vaccine</h3></th>
+                          <td></td>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <th scope="row">Type</th>
+                          <td><%=type2%></td>
+                        </tr>
+                        <tr>
+                          <th scope="row">Date</th>
+                          <td><%=dateInjection2%></td>
+                        </tr>
+                      </tbody>
+                </table>
+            </div>
+            <hr>
+            <div class="container mt-5">
+                <div class="alert alert-primary" role="alert">
+                    <h2>Covid Infection</h2>
+                  </div>
+                <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Status</th>
+                        <td scope="col"><%=(infection === 0) ? "Negative": "Positive"%></td>
+                      </tr>
+                    </thead>
+                </table>
+            </div>
+
+            <div class="container">
+                <a href="/edit-covid" class="btn btn-info btn-lg w-100">Update</a> 
+            </div>
+
+            
             <%- include('../includes/end.ejs') %>
     </body>

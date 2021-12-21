@@ -3,24 +3,79 @@
 
     <body>
         <%- include('../includes/navigation.ejs') %>
-            
+
             <div class="container">
                 <div class="row">
-                    <div class="col-6">
-                        <a class="btn btn-primary" href="/attendanceCheckIn">Check In</a>
+                    <!-- Staff info button -->
+                    <div class="col-sm-6 col-md-3 mt-5">
+                        <div class="card text-center ">     
+                            <img src="/images/staff-info.png" class="card-img-top" alt="check in">
+                            <div class="card-footer">
+                                <a class="btn btn-primary w-100 btn-lg" href="/info">Staff Info</a>
+                            </div>       
+                        </div>
                     </div>
-                    <div class="col-6">
-                        <form action="/attendanceCheckOut" method="POST">
-                            <input type="hidden" name="checkOut" value="<%= new Date() %>">
-                            <button type="submit" class="btn btn-primary">Check Out</button>
-                        </form>
+
+                    <!-- Check in button -->
+                    <div class="col-sm-6 col-md-3 mt-5">
+                        <div class="card text-center ">     
+                            <img src="/images/check-in.png" class="card-img-top" alt="check in">
+                            <div class="card-footer">
+                                <a class="btn btn-primary w-100 btn-lg" href="/attendanceCheckIn">Check In</a>
+                            </div>       
+                        </div>
                     </div>
+
+                    <!-- Check Out button -->
+                    <div class="col-sm-6 col-md-3 mt-5">
+                        <div class="card text-center" >     
+                            <img src="/images/check-out.png" class="card-img-top" alt="check in">
+                            <div class="card-footer">
+                                <form action="/attendanceCheckOut" method="POST">
+                                    <input type="hidden" name="checkOut" value="<%= new Date() %>">
+                                    <button type="submit" class="btn btn-primary w-100 btn-lg">Check Out</button>
+                                </form>
+                            </div>       
+                        </div>
+                    </div>
+
+                    <!-- Annual Leaves Button -->
+                    <div class="col-sm-6 col-md-3 mt-5">
+                        <div class="card text-center" >     
+                            <img src="/images/annualLeave.png" class="card-img-top" alt="Annual Leave">
+                            <div class="card-footer">
+                                <a class="btn btn-primary w-100 btn-lg" href="/annualLeave">Annual Leave</a>
+                            </div>       
+                        </div>
+                    </div>
+
+                    <!-- Covid Check Button -->
+                    <div class="col-sm-6 col-md-3 mt-5">
+                        <div class="card text-center" >     
+                            <img src="/images/covid-check.png" class="card-img-top" alt="Covid Check">
+                            <div class="card-footer">
+                                <a class="btn btn-primary w-100 btn-lg" href="/covid">Covid</a>
+                            </div>       
+                        </div>
+                    </div>
+
+                    <!-- Work Info Button -->
+                    <div class="col-sm-6 col-md-3 mt-5">
+                        <div class="card text-center" >     
+                            <img src="/images/time-work.png" class="card-img-top" alt="Work Info">
+                            <div class="card-footer">
+                                <a class="btn btn-primary w-100 btn-lg" href="/workinfo">Time Work</a>
+                            </div>       
+                        </div>
+                    </div>
+
+                    
                 </div>
                 <div class="row mt-5">
                     <div class="col-6">
-                        <a class="btn btn-primary" href="/annualLeave">Leave</a>
+                        
                     </div>
-                    
+
                 </div>
             </div>
 

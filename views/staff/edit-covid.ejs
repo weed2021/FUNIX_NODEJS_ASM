@@ -1,0 +1,87 @@
+<%- include('../includes/head.ejs') %>
+    </head>
+
+    <body>
+        <%- include('../includes/navigation.ejs') %>
+            <form action="/<% if(edit){%>postEditCovidCheck<%}else{%>postAddCovidCheck<%}%>" method="POST">
+                <div class="container">
+                    <div class="row">
+                        <div class="alert alert-primary" role="alert">
+                            <h2>Registration</h2>
+                        </div>
+                        
+                        <hr>
+
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon1">Celsius</span>
+                            <input type="number" class="form-control" name="celsius" value="<% if(edit) { %><%= celsius %><% }%>">
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon1">Date</span>
+                            <input type="date" class="form-control" name="dateRegister" value="<% if(edit) { %><%= dateRegister %><% }%>">
+                        </div>
+
+                        
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="alert alert-primary" role="alert">
+                            <h2>Vaccine</h2>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <h4>First</h4>
+                            <hr>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text" id="basic-addon1">Type</span>
+                                <input type="text" class="form-control" name="type1" value="<% if(edit) { %><%= type1 %><% }%>">
+                            </div>
+
+                            <div class="input-group mb-3">
+                                <span class="input-group-text" id="basic-addon1">Date</span>
+                                <input type="date" class="form-control" name="dateInjection1" value="<% if(edit) { %><%= dateInjection1 %><% }%>">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h4>Second</h4>
+                            <hr>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text" id="basic-addon1">Type</span>
+                                <input type="text" class="form-control" name="type2" value="<% if(edit) { %><%= type2 %><% }%>">
+                            </div>
+
+                            <div class="input-group mb-3">
+                                <span class="input-group-text" id="basic-addon1">Date</span>
+                                <input type="date" class="form-control" name="dateInjection2" value="<% if(edit) { %><%= dateInjection2 %><%}%>">
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        
+                        <div class="alert alert-primary" role="alert">
+                            <h2>Covid Infection</h4>
+                        </div>
+                            <div class="input-group mb-3">
+                                <label class="input-group-text" for="inputGroupSelect01">Status</label>
+                                <select class="form-select" name="infection" id="inputGroupSelect01">
+                                    <% if(edit&&(infection!==1)) { %>
+                                        <option value="1" >Positive </option>
+                                        <option value="0" selected>Negative</option>
+                                    <%}else{%>
+                                        <option value="1" selected>Positive </option>
+                                        <option value="0" >Negative</option>
+                                    <%}%>
+                                </select> 
+                              </div>
+                           
+                    </div>
+                    <div class="row mt-5">
+                        <button type="submit" class="btn btn-primary w-100 btn-lg">Update</button>
+                    </div>
+                </div>
+            </form>
+
+            <%- include('../includes/end.ejs') %>
+    </body>

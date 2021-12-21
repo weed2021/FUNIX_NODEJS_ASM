@@ -2,50 +2,252 @@ const Staff = require('../models/staff');
 const moment = require('moment');
 const Attendance = require('../models/attendance');
 const Leave = require('../models/annualLeave');
-const Covid =  require('../models/covid');
+const Covid = require('../models/covid');
 
-exports.postCovidCheck = (req, res, next) => {
+//Dữ liệu post từ form wildcard
+exports.postSearch = (req, res, next) => {
+    const wildCard = req.body.wildCard;
+
+    
+    Attendance.find().then(attendances => {
+        let results = [];
+
+        let resultsOverLack = [];
+
+        //Workplace search
+        if (wildCard === "workplace") {
+            const request = req.body.workplace.toLowerCase();
+            for (let att of attendances) {
+                for (let item of att.items) {
+                    if (item.workplace === request) {
+                        results.push(item)
+                    }
+                }
+            }
+            return results
+        }
+        //Day search
+        else if (wildCard === 'daySearch') {
+            const daySearch = new Date(req.body.daySearch).getDate();
+            const monthSearch = new Date(req.body.daySearch).getMonth() + 1;
+            console.log(daySearch, monthSearch)
+            for (let att of attendances) {
+                if (att.day === daySearch && att.month === monthSearch) {
+                    for (let item of att.items) {
+                        results.push(item)
+                    }
+                }
+
+            }
+            return results
+        }
+        //Month search
+        else if (wildCard === 'monthSearch') {
+            const monthSearch = req.body.monthSearch
+            for (let att of attendances) {
+                if (att.month == monthSearch) {
+                    for (let item of att.items) {
+                        results.push(item)
+                    }
+                }
+
+            }
+            return results
+        }
+        //Overtime days of month
+        else if (wildCard === "overTimeDays") {
+            const month = req.body.overTimeDays;
+            for (let att of attendances) {
+                if(att.totalTimeOfDay > 8 && att.month==month){
+                    resultsOverLack.push(att)
+                }  
+            }
+            return res.render('staff/result-search', {
+                overLack: resultsOverLack,
+                attendances: results,
+                pageTitle: 'Result Search',
+                path: '/result-search',
+            })
+            //return resultsOverLack
+        }
+        
+        //Lack of time Days
+        else if (wildCard === "lackOfTimeDays") {
+            const month = req.body.lackOfTimeDays;
+            for (let att of attendances) {
+                if(att.totalTimeOfDay < 8 && att.month==month){
+                    resultsOverLack.push(att)
+                }  
+            }   
+            console.log(resultsOverLack)
+            return res.render('staff/result-search', {
+                overLack: resultsOverLack,
+                attendances: results,
+                pageTitle: 'Result Search',
+                path: '/result-search',
+            })
+            //return resultsOverLack
+        }
+    }).then(results => {
+        res.render('staff/result-search', {
+            //overLack: resultsOverLack,
+            attendances: results,
+            overLack: [],
+            pageTitle: 'Result Search',
+            path: '/result-search',
+        })
+    })
+        .catch(err => {
+            console.log(err)
+        })
+
+
+
+    //console.log(req.body.workplace)
+
+}
+
+//Render form chỉnh sửa thông tin covid
+exports.getEditCovidCheck = (req, res, next) => {
+
+    Covid.findOne({ userId: req.staff._id }).then(covid => {
+        const celsius = covid.bodyTemporature.celsius;
+        const dateRegister = moment(covid.bodyTemporature.dateRegister).format('YYYY-MM-DD');
+        console.log(dateRegister)
+        const type1 = covid.vaccine.first.type;
+        const dateInjection1 = moment(covid.vaccine.first.dateInjection1).format('YYYY-MM-DD');
+        const type2 = covid.vaccine.second.type;
+        const dateInjection2 = moment(covid.vaccine.second.dateInjection2).format('YYYY-MM-DD');
+        const infection = covid.infection;
+
+        res.render('staff/edit-covid', {
+            edit: true,
+            celsius: celsius,
+            dateRegister: dateRegister,
+            type1: type1,
+            dateInjection1: dateInjection1,
+            type2: type2,
+            dateInjection2: dateInjection2,
+            infection: infection,
+            covid: covid,
+            pageTitle: 'Covid check',
+            path: '/edit-covid'
+
+        })
+    })
+
+}
+
+//Xử lý data đẩy lên database khi chỉnh sửa xong thông tin covid
+exports.postEditCovidCheck = (req, res, next) => {
     const celsius = req.body.celsius;
-    const dateRegister = new Date();
-    console.log(req.body.type1)
+    const dateRegister = new Date(req.body.dateRegister);
     const type1 = req.body.type1;
     const dateInjection1 = new Date(req.body.dateInjection1);
     const type2 = req.body.type2;
     const dateInjection2 = new Date(req.body.dateInjection2);
+    const infection = parseInt(req.body.infection);
 
+    Covid.findOne({ userId: req.staff._id }).then(covid => {
+        covid.bodyTemporature.celsius = celsius;
+        covid.bodyTemporature.dateRegister = req.body.dateRegister.length > 0 ? dateRegister : null;
+        covid.vaccine.first.type = type1;
+
+        req.body.dateInjection1.length > 0 ? covid.vaccine.first.dateInjection1 = dateInjection1 : null;
+
+        //covid.vaccine.first.dateInjection1 = req.body.dateInjection1.length>0?dateInjection1:null;
+        covid.vaccine.second.type = type2;
+        covid.vaccine.second.dateInjection2 = req.body.dateInjection2.length > 0 ? dateInjection2 : null;
+        covid.infection = infection;
+        return covid.save()
+    })
+        .then(() => {
+            res.redirect('/covid');
+        })
+        .catch(err => {
+            console.log(err);
+        })
+
+
+}
+
+//Xử lý data đẩy lên database khi tạo xong thông tin covid
+exports.postAddCovidCheck = (req, res, next) => {
+    const celsius = req.body.celsius;
+    const dateRegister = new Date(req.body.dateRegister);
+    const type1 = req.body.type1;
+    const dateInjection1 = new Date(req.body.dateInjection1);
+    const type2 = req.body.type2;
+    const dateInjection2 = new Date(req.body.dateInjection2);
     const infection = req.body.infection;
 
     const covid = new Covid({
         staffId: req.staff._id,
         bodyTemporature: {
             celsius: celsius,
-            dateRegister: dateRegister
-        }, 
+            dateRegister: req.body.dateRegister.length > 0 ? dateRegister : null
+        },
         vaccine: {
-            first:{
+            first: {
                 type: type1,
-                dateInjection1: dateInjection1
+                dateInjection1: req.body.dateInjection1.length > 0 ? dateInjection1 : null //Check if staff choose date inject vaccine
             },
-            second:{
+            second: {
                 type: type2,
-                dateInjection1: dateInjection2
+                dateInjection2: req.body.dateInjection2.length > 0 ? dateInjection2 : null
             }
         },
-        infection: parseInt(infection)
+        infection: req.body.infection ? parseInt(infection) : 0
     })
     covid.save();
-
-
+    return res.redirect('/covid')
 }
 
-exports.getCovidCheck = (req, res, next) => {
-    res.render('staff/covid', {
-        pageTitle: 'Covid check',
-        path: '/covid'
+//Render form tạo thông tin covid
+exports.getAddCovidCheck = (req, res, next) => {
+    res.render('staff/edit-covid', {
+        pageTitle: 'Add Covid Info',
+        path: '/add-covid',
+        edit: false
     })
 }
 
+//Render html show thông tin covid staff đã nhập
+exports.getCovidCheck = (req, res, next) => {
+    Covid.findOne({ userId: req.staff._id }).then(covid => {
+        if (covid) {
+            const celsius = covid.bodyTemporature.celsius;
+            const dateRegister = moment(covid.bodyTemporature.dateRegister).format('L');
+            const type1 = covid.vaccine.first.type;
+            const dateInjection1 = moment(covid.vaccine.first.dateInjection1).format('L');
+            const type2 = covid.vaccine.second.type;
+            const dateInjection2 = moment(covid.vaccine.second.dateInjection2).format('L');
+            const infection = covid.infection;
+            res.render('staff/covid', {
+                celsius: celsius ? celsius : "Chua co thong tin",
+                dateRegister: (covid.bodyTemporature.dateRegister) ? dateRegister : "Chua co thong tin",
+                type1: type1 ? type1 : "Chua co thong tin",
+                dateInjection1: (covid.vaccine.first.dateInjection1) ? dateInjection1 : "Chua co thong tin",
+                type2: type2 ? type2 : "Chua co thong tin",
+                dateInjection2: (covid.vaccine.second.dateInjection2) ? dateInjection2 : "Chua co thong tin",
+                infection: infection,
+                covid: covid,
+                pageTitle: 'Covid Info',
+                path: '/covid'
+            })
+        } else {
+            res.render('staff/edit-covid', {
+                pageTitle: 'Add covid info',
+                path: '/edit-covid',
+                edit: false
+            })
+        }
 
+    })
+
+}
+
+//Xử lý khi staff gửi request xem lương của tháng
 exports.postSalary = (req, res, next) => {
 
     const salaryScale = req.staff.salaryScale;
@@ -86,6 +288,7 @@ exports.postSalary = (req, res, next) => {
 
 }
 
+//Xử lý render Thông tin giờ làm việc
 exports.getWorkInfo = (req, res, next) => {
 
     //Nếu là lần cuối cùng của ngày thì hiện tổng số giờ làm theo ngày  
@@ -101,6 +304,8 @@ exports.getWorkInfo = (req, res, next) => {
 
 }
 
+
+//Xử lý khi staff gửi request muốn nghỉ phép
 exports.postAnnualLeave = (req, res, next) => {
     const dayLeaveRequest = parseFloat(req.body.hoursLeave / 8);
     if (dayLeaveRequest > req.staff.annualLeave) {
@@ -136,6 +341,7 @@ exports.postAnnualLeave = (req, res, next) => {
     }
 }
 
+//Render ra html để đăng ký nghỉ phép
 exports.getAnnualLeave = (req, res, next) => {
     res.render('staff/annualLeave', {
         pageTitle: 'Annual Leave',
@@ -144,11 +350,18 @@ exports.getAnnualLeave = (req, res, next) => {
     })
 }
 
+//Xử lý khi staff request check out
 exports.postCheckOutAttendance = (req, res, next) => {
     const checkOut = req.body.checkOut;
     Attendance.findOne({ statusWork: true })
         .then(attendance => {
-
+            if(!attendance){
+                return res.render('errMess', {
+                    pageTitle: 'Invalid Checkout',
+                    errMess: 'You need to check in first!',
+                    path: '/err'
+                })
+            }
             let TotalTimeOfDay = attendance.totalTimeOfDay;
 
             attendance.statusWork = false;
@@ -193,6 +406,7 @@ exports.postCheckOutAttendance = (req, res, next) => {
         })
 }
 
+//Render ra giao diện để staff check in
 exports.getCheckInAttendance = (req, res, next) => {
     const staffId = req.staff._id;
     Staff.findById(staffId)
@@ -208,6 +422,7 @@ exports.getCheckInAttendance = (req, res, next) => {
         })
 }
 
+//Xử lý khi staff request check in
 exports.postCheckInAttendance = (req, res, next) => {
     const workplace = req.body.workplace;
     const checkIn = req.body.checkIn;
@@ -320,6 +535,7 @@ exports.postCheckInAttendance = (req, res, next) => {
         })
 }
 
+//Render ra giao diện info staff
 exports.getStaff = (req, res, next) => {
     Staff.find().then(staffs => {
         res.render('staff/info', {
@@ -338,6 +554,7 @@ exports.getStaff = (req, res, next) => {
     })
 }
 
+//Xử lý request khi staff update thông tin 
 exports.postStaff = (req, res, next) => {
     const staffId = req.body.staffId;
     const UpdatedImageUrl = req.body.image;
@@ -355,6 +572,7 @@ exports.postStaff = (req, res, next) => {
         })
 }
 
+//Render gia giao diện homepage
 exports.getHomePage = (req, res, next) => {
     res.render('staff/homepage', {
         pageTitle: 'Staff Info',

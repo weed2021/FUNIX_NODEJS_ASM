@@ -13,6 +13,7 @@ const covidSchema = new Schema({
         },
         dateRegister: {
             type: Date,
+            default: null,
             required: false
         }
     },
@@ -37,7 +38,7 @@ const covidSchema = new Schema({
             },
             dateInjection2:{
                 type: Date,
-                default: null,
+                // default: null,
                 require: false
             }
         }
@@ -45,7 +46,7 @@ const covidSchema = new Schema({
     },
     infection:{
         type: Number,
-        default: 1,
+        default: 0,
         require: true
     }
 })
