@@ -8,10 +8,6 @@
     "start": "nodemon app.js",
     "start-server": "node app.js"
   },
-  "repository": {
-    "type": "git",
-    "url": ""
-  },
   "author": "",
   "license": "ISC",
   "bugs": {
