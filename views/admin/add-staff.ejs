@@ -1,0 +1,107 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/formStaff.css">
+    <script src="/js/form.js"></script>
+    </head>
+
+    <body>
+        <%- include('../includes/navigation.ejs') %>
+            <div class="form-body">
+                <div class="row">
+                    <div class="form-holder">
+                        <div class="form-content">
+                            <div class="form-items">
+                                <h3>Add New Staff</h3>
+                                <p>Fill in the data below.</p>
+                                <form action="/add-staff" method="POST" class="requires-validation" novalidate enctype="multipart/form-data">
+                                    <div class="col-md-12">
+                                        <input class="form-control" type="text" name="name" placeholder="Full Name"
+                                            required>
+                                        <div class="valid-feedback">Name field is valid!</div>
+                                        <div class="invalid-feedback">Name field cannot be blank!</div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <input class="form-control" type="text" name="email" placeholder="Email"
+                                            required>
+                                        <div class="valid-feedback">Email field is valid!</div>
+                                        <div class="invalid-feedback">Email field cannot be blank!</div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <input class="form-control" type="password" name="password" placeholder="Password"
+                                            required>
+                                        <div class="valid-feedback">Password field is valid!</div>
+                                        <div class="invalid-feedback">Password field cannot be blank!</div>
+                                    </div>
+
+
+                                    <div class="col-md-12">
+                                        <input class="form-control" type="text" name="doB" placeholder="Birth Day"
+                                            onfocus="(this.type='date')" required>
+                                        <div class="valid-feedback">Day of birth is valid!</div>
+                                        <div class="invalid-feedback">Day of birth cannot be blank!</div>
+                                    </div>
+                                    
+
+                                    <div class="col-md-12">
+                                        <input class="form-control" type="number" name="salaryScale"
+                                            placeholder="Salary Scare" required>
+                                        <div class="valid-feedback">Salary scare field is valid!</div>
+                                        <div class="invalid-feedback">Salary scare field cannot be blank!</div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <input class="form-control" type="text" name="startDate" placeholder="Start date"
+                                            onfocus="(this.type='date')" required>
+                                        <div class="valid-feedback">Start date is valid!</div>
+                                        <div class="invalid-feedback">Start date cannot be blank!</div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <select name = 'department' class="form-select mt-3" required>
+                                            <option selected disabled value="">Department</option>
+                                            <option value="it">IT</option>
+                                            <option value="sale">Sale</option>
+                                            <option value="marketing">Marketing</option>
+                                        </select>
+                                        <div class="valid-feedback">You selected a department!</div>
+                                        <div class="invalid-feedback">Please select a department!</div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <input class="form-control" type="number" name="annualLeave"
+                                            placeholder="Annual Leave" required>
+                                        <div class="valid-feedback">Annual leave field is valid!</div>
+                                        <div class="invalid-feedback">Annual leave field cannot be blank!</div>
+                                    </div>
+
+                                    <!-- <div class="col-md-12">
+                                        <input class="form-control" type="text" name="image" placeholder="Image URL"
+                                            required>
+                                        <div class="valid-feedback">Image URL field is valid!</div>
+                                        <div class="invalid-feedback">Image URL field cannot be blank!</div>
+                                    </div> -->
+
+                                    <div class="col-md-12">
+                                        <input class="form-control" 
+                                            type="file" 
+                                            name="image"
+                                            id="image"
+                                            required>
+                                        <div class="valid-feedback">Image URL field is valid!</div>
+                                        <div class="invalid-feedback">Image URL field cannot be blank!</div>
+                                    </div>
+
+                                    <div class="form-button mt-3">
+                                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                        <button id="submit" type="submit" class="btn btn-primary">Register</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+            <%- include('../includes/end.ejs') %>

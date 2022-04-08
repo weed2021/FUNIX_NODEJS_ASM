@@ -1,0 +1,205 @@
+<%- include('../includes/head.ejs') %>
+<script src="/js/filter.js"></script>
+    </head>
+
+    <body>
+        <%- include('../includes/navigation.ejs') %>
+            <div class="container mt-5">
+                <div class="alert alert-secondary" role="alert">
+                    <div class="row">
+                        <h3>Wild Search</h3>
+                    </div>
+                    <form class="row" action="/result-search" method="POST">
+                        <div class="col-md-4 mt-2">
+                            <select onchange="getField(this)" name="wildCard" class="form-select">
+                                <option selected value="workplace" >Workplace</option>
+                                <option value="daySearch">Day Search</option>
+                                <option value="monthSearch">Month Search</option>
+                                <option value="overTimeDays">Overtime Days Of Month</option>
+                                <option value="lackOfTimeDays">Lack Of Time Days Of Month</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mt-2">
+                            <input id="field" name="workplace" class="form-control" type="text">
+                        </div>
+                        <div class="col-md-2 mt-2">
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                            <button class="btn btn-warning w-100" type="submit">Search</button>
+                        </div>
+                        
+                    </form>     
+                  </div> 
+                     <!-- Guide Text -->
+                     <p class="fst-italic" id = "guideText"></p>
+            </div>
+            <hr>
+            
+            <!-- Search lương -->
+            <div class="container">
+                <div class="alert alert-info" role="alert">
+                    <div class="row">
+                        <h3>Salary Search</h3>
+                    </div>
+                    <form action="/postSalary" method="POST" class="row">
+                       
+                        <div class="col-md-4 mt-2">
+                            <select name = "month" class="form-select">
+                                <option selected value="1">January</option>
+                                <option value="2">February</option>
+                                <option value="3">March</option>
+                                <option value="4">April</option>
+                                <option value="5">May</option>
+                                <option value="6">June</option>
+                                <option value="7">July</option>
+                                <option value="8">August</option>
+                                <option value="9">September</option>
+                                <option value="10">October</option>
+                                <option value="11">November</option>
+                                <option value="12">December</option>
+                            </select>
+                        </div>
+                            <!-- <input type="hidden" value="11" name='month'> -->
+                        <div class="col-md-2 mt-2">
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                            <button type="submit" class="btn btn-primary w-100">Search</button>                      
+                        </div>           
+                    </form>
+                  </div>           
+            </div>
+            
+            <%if(!isManager){%>
+                 <!-- Thông tin quản lý -->
+                <div class="container">
+                    <div class="card text-white bg-secondary mb-3" style="max-width: 24rem;">
+                        <div class="card-header"><h3>Manager Info</h3></div>
+                        <div class="card-body">
+                            <p class="card-title">ID: <%=manager._id%></p>
+                            <p class="card-text">Name: <%=manager.name%></p>
+                        </div>
+                    </div>
+                </div>
+            <% } %> 
+             
+            
+
+            <!-- Danh sách phiên làm việc -->
+            <div class="container">
+                <% for (let day of attendances) { %>
+                    <div class="alert alert-danger" role="alert">
+                        <h1>Day: <%= day.day%>
+                      </div>
+                    </h1> 
+                        <% for (let i=0; day.items.length> i; i++ ) { %>
+                            <% if (i !==day.items.length - 1) {%>
+                                <table class="table" class="table-primary">
+                                    <thead>
+                                    <tr class="table-primary">
+                                        <th scope="col">#Session Code</th>
+                                        <td scope="col"><%= day.items[i]._id %></td>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <th scope="row">Check In</th>
+                                        <td><%= new Date(day.items[i].checkIn).getHours()%>h<%= new
+                                            Date(day.items[i].checkIn).getMinutes()%>'</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Check Out</th>
+                                        <td><% if (day.items[i].checkOut) {%>
+                                            <%=new Date(day.items[i].checkOut).getHours()%>h<%= new
+                                                    Date(day.items[i].checkOut).getMinutes()%>'<%}%></td>
+                                        
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Work Place</th>
+                                        <td colspan="2"><%= day.items[i].workplace%></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Time Of Session</th>
+                                        <td colspan="2"><%= (day.items[i].timeOfSession).toFixed(2)%> Hours</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <%} else {%>
+                                    <table class="table" class="table-primary">
+                                        <thead>
+                                        <tr class="table-primary">
+                                            <th scope="col">#Session Code</th>
+                                            <td scope="col"><%= day.items[i]._id %></td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <th scope="row">Check In</th>
+                                            <td><%= new Date(day.items[i].checkIn).getHours()%>h<%= new
+                                                Date(day.items[i].checkIn).getMinutes()%>'</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Check Out</th>
+                                            <td><% if (day.items[i].checkOut) {%>
+                                                <%=new Date(day.items[i].checkOut).getHours()%>h<%= new
+                                                        Date(day.items[i].checkOut).getMinutes()%>'<%}%></td>
+                                            
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Work Place</th>
+                                            <td colspan="2"><%= day.items[i].workplace%></td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Time Of Session</th>
+                                            <td colspan="2"><%= (day.items[i].timeOfSession).toFixed(2)%> Hours</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Annual Leave</th>
+                                            <td colspan="2"><%= day.annualLeave %> Hours</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Time Of Day:</th>
+                                            <td colspan="2"><%= day.totalTimeOfDay.toFixed(2) %> Hours</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <%} %>
+                                        <% } %>
+
+                    <hr>
+
+                    <% } %>
+            </div>
+            
+               
+            <div class="container">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <%if(hasPreviousPage){%>
+                            <li class="page-item"><a class="page-link" href="?page=<%=previousPage%>">Previous</a></li>
+                        <%}%>
+                      <%if(currentPage !=1&& previousPage !=1){%>
+                        <li class="page-item"><a class="page-link" href="?page=1">1</a></li>
+                      <%}%>
+
+                      <%if(hasPreviousPage){%>
+                        <li class="page-item"><a class="page-link" href="?page=<%=previousPage%>"><%=previousPage%></a></li>
+                    <%}%>
+                      
+                      <li class="page-item active"><a class="page-link" href="?page=<%=currentPage%>"><%=currentPage%></a></li>
+                      
+                      <%if(hasNextPage){%>
+                        <li class="page-item"><a class="page-link" href="?page=<%=nextPage%>"><%=nextPage%></a></li>
+                    <%}%>
+                    <%if(lastPage !=1 && lastPage !=nextPage){%>
+                        <li class="page-item"><a class="page-link" href="?page=<%=lastPage%>"><%=lastPage%></a></li>
+                    <%}%>
+
+                      <%if(hasNextPage){%>
+                        <li class="page-item"><a class="page-link" href="?page=<%=nextPage%>">Next</a></li>
+                    <%}%>
+                      
+                    </ul>
+                  </nav>
+            </div>
+                
+                    <%- include('../includes/end.ejs') %>
+    </body>

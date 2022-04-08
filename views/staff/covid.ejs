@@ -1,0 +1,195 @@
+<%- include('../includes/head.ejs') %>
+    </head>
+
+    <body>
+        <%- include('../includes/navigation.ejs') %>
+
+        <% if (!isManager) { %>
+          <div class="container">
+            <div class="container mt-5">
+              <div class="alert alert-primary" role="alert">
+                  <h2>Body Temporature</h2>
+                </div>
+              <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Celsius</th>
+                      <td scope="col"><%=celsius%></td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row">Registration Date</th>
+                      <td><%=dateRegister%></td>
+                    </tr>
+                  </tbody>
+              </table>
+            </div>
+            <hr>
+            <div class="container mt-5">
+                <div class="alert alert-primary" role="alert">
+                    <h2>Vaccine</h2>
+                  </div>
+                <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col"><h3>First Vaccine</h3></th>
+                        <td></td>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="col">Type</th>
+                        <td><%=type1%></td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Date</th>
+                        <td><%=dateInjection1%></td>
+                      </tr>
+                    </tbody>
+
+                    <thead>
+                        <tr>
+                          <th scope="col"><h3>Second Vaccine</h3></th>
+                          <td></td>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <th scope="row">Type</th>
+                          <td><%=type2%></td>
+                        </tr>
+                        <tr>
+                          <th scope="row">Date</th>
+                          <td><%=dateInjection2%></td>
+                        </tr>
+                      </tbody>
+                </table>
+            </div>
+            <hr>
+            <div class="container mt-5">
+                <div class="alert alert-primary" role="alert">
+                    <h2>Covid Infection</h2>
+                  </div>
+                <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Status</th>
+                        <td scope="col"><%=(infection === 0) ? "Negative": "Positive"%></td>
+                      </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="container">
+                <a href="/edit-covid" class="btn btn-primary btn-lg w-100">Update</a> 
+            </div>
+          </div>
+        <% } else { %>
+          <!-- Button create invoice -->
+          <div class="container mb-5 mt-5">
+            <a href="/getCovidStatus" class="btn btn-primary btn-lg ">Download Invoice</a>
+          </div>
+          <!-- End -->
+          <% for( let record of listRecord ) { %>
+            <% if (record) { %>
+              <div class="container">
+                <h1 class="text-success"><%= record.staffId.name %> </h1>
+                <hr>
+                
+                <div class="container mt-5">
+                  <div class="alert alert-primary" role="alert">
+                      <h2>Body Temporature</h2>
+                    </div>
+                  <table class="table">
+                      <thead>
+                        <tr>
+                          <th scope="col">Celsius</th>
+                          <td scope="col"><%=record.bodyTemporature.celsius%></td>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <th scope="row">Registration Date</th>
+                          <td id='test'><%=record.bodyTemporature.dateRegister.getDate()%>/
+                            <%=record.bodyTemporature.dateRegister.getMonth()%>/
+                            <%=record.bodyTemporature.dateRegister.getFullYear()%>
+                          </td>
+                        </tr>
+                      </tbody>
+                  </table>
+                </div>
+                <hr>
+                <div class="container mt-5">
+                    <div class="alert alert-primary" role="alert">
+                        <h2>Vaccine</h2>
+                      </div>
+                    <table class="table">
+                        <thead>
+                          <tr>
+                            <th scope="col"><h3>First Vaccine</h3></th>
+                            <td></td>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <th scope="col">Type</th>
+                            <td><%=record.vaccine.first.type%></td>
+                          </tr>
+                          <tr>
+                            <th scope="row">Date</th>
+                            <td>
+                              <%=record.vaccine.first.dateInjection1.getDate()%>/
+                              <%=record.vaccine.first.dateInjection1.getMonth()%>/
+                              <%=record.vaccine.first.dateInjection1.getFullYear()%>
+                            
+                            </td>
+                          </tr>
+                        </tbody>
+    
+                        <thead>
+                            <tr>
+                              <th scope="col"><h3>Second Vaccine</h3></th>
+                              <td></td>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <th scope="row">Type</th>
+                              <td><%=record.vaccine.second.type%></td>
+                            </tr>
+                            <tr>
+                              <th scope="row">Date</th>
+                              <td>
+                                <%=record.vaccine.second.dateInjection2.getDate()%>/
+                                <%=record.vaccine.second.dateInjection2.getMonth()%>/
+                                <%=record.vaccine.second.dateInjection2.getFullYear()%>
+                              </td>
+                            </tr>
+                          </tbody>
+                    </table>
+                </div>
+                <hr>
+                <div class="container mt-5">
+                    <div class="alert alert-primary" role="alert">
+                        <h2>Covid Infection</h2>
+                      </div>
+                    <table class="table">
+                        <thead>
+                          <tr>
+                            <th scope="col">Status</th>
+                            <td scope="col"><%=(record.infection === 0) ? "Negative": "Positive"%></td>
+                          </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+            <% } %>
+            
+            <% } %>
+          
+
+        <% } %>    
+
+            
+            <%- include('../includes/end.ejs') %>
+    </body>

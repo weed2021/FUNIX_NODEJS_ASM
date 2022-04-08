@@ -1,0 +1,46 @@
+<%- include('../includes/head.ejs') %>
+    </head>
+    <body>
+        <%- include('../includes/navigation.ejs') %>
+        <div class="container mt-5">
+            <div class="row">
+                <form action="/edit-attendance" method="POST">
+                    <div class="col-md-6">
+                        <label for="checkIn">Check In</label>
+                        <input 
+                            name="checkIn"
+                            type="datetime-local" 
+                            class="form-control" 
+                            id="checkIn" 
+                            value="<%= checkIn %>"
+                        >
+                    </div>
+                    <div class="col-md-6">
+                        <label for="checkOut">Check out</label>
+                        <input 
+                            name="checkOut"
+                            type="datetime-local" 
+                            class="form-control" 
+                            id="checkOut"
+                            value="<%= checkOut %>"
+                        >
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="workplace">Work Place</label>
+                        <select name="workplace" id="inputState" class="form-select mb-3">
+                            <option value="<%= sessionWork.workplace%>" selected><%= sessionWork.workplace%></option>
+                            <option value="home">Home</option>
+                            <option value="company">Company</option>
+                            <option value="customer">Customer</option>
+                        </select>
+                    </div>
+                    <input type="hidden" name="sessionWorkId" value="<%= sessionWork._id %>">
+                    <input type="hidden" name="dayId" value="<%= dayId %>">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <button class="btn btn-primary" onclick="history.back()" type="submit">Update</button>
+                </form>
+            </div>
+        </div>
+
+<%- include('../includes/end.ejs') %>
