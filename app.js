@@ -69,6 +69,7 @@ app.use((req, res, next) => {
 app.use(adminRoutes);
 app.use(staffRoutes);
 app.use(authRoutes);
+console.log('changed');
 
 app.use(errorController.get404)
 
