@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/weed2021/FUNIX_NODEJS_ASM#readme",
   "devDependencies": {
-    "nodemon": "^2.0.15"
+    "node": "^2.0.15"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
