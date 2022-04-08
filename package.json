@@ -8,6 +8,10 @@
     "start": "nodemon app.js",
     "start-server": "node app.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/weed2021/FUNIX_NODEJS_ASM.git"
+  },
   "author": "",
   "license": "ISC",
   "bugs": {
