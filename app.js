@@ -69,7 +69,7 @@ app.use((req, res, next) => {
 app.use(adminRoutes);
 app.use(staffRoutes);
 app.use(authRoutes);
-
+console.log('hehe')
 app.use(errorController.get404)
 
 mongoose.connect(MONGODB_URI)
