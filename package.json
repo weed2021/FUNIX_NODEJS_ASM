@@ -18,9 +18,6 @@
     "url": "https://github.com/weed2021/FUNIX_NODEJS_ASM/issues"
   },
   "homepage": "https://github.com/weed2021/FUNIX_NODEJS_ASM#readme",
-  "devDependencies": {
-    "node": "^2.0.15"
-  },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.1",
