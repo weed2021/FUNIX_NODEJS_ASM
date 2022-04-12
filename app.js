@@ -80,7 +80,8 @@ mongoose.connect(MONGODB_URI)
         console.log(err)
     })
 
-app.listen(8080, "0.0.0.0", () => {
+const PORT = process.env.PORT || 3000
+app.listen(PORT, () => {
     console.log('Server is running!');
 })
 
