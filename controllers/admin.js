@@ -36,13 +36,13 @@ exports.postConfirmButton = (req, res, next) => {
 exports.postDeleteAttendance = (req, res, next) => {
     const attendanceId = req.params.attendanceId;
     const dayId = req.body.dayId;
-    
+
     Attendance.findById(dayId)
         .then(attendance => {
             const index = attendance.items.findIndex(index => {
                 return index._id.toString() === attendanceId.toString();
             })
-            
+
             //Update total time of day if only delete one of session.
             attendance.totalTimeOfDay -= attendance.items[index].timeOfSession;
 
@@ -56,23 +56,23 @@ exports.postDeleteAttendance = (req, res, next) => {
             attendance.save()
             return attendance;
         })
-        .then(attendance=>{
-             // Render ra page trước
-             const staffId = attendance.staffId;
-             const monthSearch = attendance.month;
- 
-             Staff.findById(staffId)
-                 .then(staff => {
-                     Attendance.find({ staffId: staff._id, month: monthSearch })
-                         .then(attendances => {
-                             res.render('admin/confirmTimeWorkDetail', {
-                                 pageTitle: "Confirm Time Work",
-                                 path: '/confirmTimeWork',
-                                 attendances: attendances,
-                                 month: monthSearch,
-                             })
-                         })
-                 })
+        .then(attendance => {
+            // Render ra page trước
+            const staffId = attendance.staffId;
+            const monthSearch = attendance.month;
+
+            Staff.findById(staffId)
+                .then(staff => {
+                    Attendance.find({ staffId: staff._id, month: monthSearch })
+                        .then(attendances => {
+                            res.render('admin/confirmTimeWorkDetail', {
+                                pageTitle: "Confirm Time Work",
+                                path: '/confirmTimeWork',
+                                attendances: attendances,
+                                month: monthSearch,
+                            })
+                        })
+                })
         })
 
 }
@@ -174,14 +174,14 @@ exports.getConfirmTimeWorkDetail = (req, res, next) => {
 
     Staff.findById(staffId)
         .then(staff => {
-            Attendance.find({ staffId: staff._id, month: monthSearch,isConfirm: false })
+            Attendance.find({ staffId: staff._id, month: monthSearch, isConfirm: false })
                 .then(attendances => {
-                        return res.render('admin/confirmTimeWorkDetail', {
-                            pageTitle: "Confirm Time Work",
-                            path: '/confirmTimeWork',
-                            attendances: attendances,
-                            month: monthSearch,
-                        })              
+                    return res.render('admin/confirmTimeWorkDetail', {
+                        pageTitle: "Confirm Time Work",
+                        path: '/confirmTimeWork',
+                        attendances: attendances,
+                        month: monthSearch,
+                    })
                 })
         })
 
@@ -270,11 +270,12 @@ exports.postAddStaff = (req, res, next) => {
     const department = req.body.department;
     const annualLeave = req.body.annualLeave;
     const image = req.file;
-    
-    if(!image){
+
+    if (!image) {
         return console.log(image)
     }
 
+    console.log("");
     Staff.findOne({ email: email })
         .then(staffDoc => {
             if (staffDoc) {
