@@ -74,10 +74,13 @@ app.use(errorController.get404)
 
 mongoose.connect(MONGODB_URI)
     .then(() => {
-        app.listen(3000)
         console.log('Connected!')
     })
     .catch(err => {
         console.log(err)
     })
+
+app.listen(8080, "0.0.0.0", () => {
+    console.log('Server is running!');
+})
 
