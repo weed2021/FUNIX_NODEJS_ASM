@@ -7,7 +7,6 @@ const path = require('path');
 const PDFDocument = require('pdfkit');
 const moment = require('moment');
 
-
 exports.postConfirmButton = (req, res, next) => {
 
     const month = req.body.month;
@@ -275,7 +274,6 @@ exports.postAddStaff = (req, res, next) => {
         return console.log(image)
     }
 
-    console.log("");
     Staff.findOne({ email: email })
         .then(staffDoc => {
             if (staffDoc) {
